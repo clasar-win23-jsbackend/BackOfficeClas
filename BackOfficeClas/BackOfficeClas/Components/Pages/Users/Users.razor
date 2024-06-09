@@ -1,0 +1,47 @@
+﻿@page "/users"
+@using BackOfficeClas.Data
+@inject HttpClient Http
+@attribute [StreamRendering]
+
+<PageTitle>Users</PageTitle>
+
+<h1>Users</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+   
+      
+            @foreach (var user in users)
+            {
+                <div class="mb-3">
+                    <p>Firstname: @user.FirstName</p> <p>Lastname: @user.LastName</p> <p>Email: @user.Email</p>
+
+                </div>
+            }
+      
+}
+
+@code {
+    private ApplicationUser[]? users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await Http.GetFromJsonAsync<ApplicationUser[]>("http://localhost:7290/api/GetUsers");
+    }
+
+    public class ApplicationUser()
+    {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Email{ get; set; }
+    }
+
+ 
+}
+
